@@ -1,0 +1,19 @@
+{
+  "database": {
+    "host": "localhost",
+    "port": 3306,
+    "user": "root",
+    "password": "",
+    "database": "ipt2025_db"
+  },
+  "secret": "marneilx",
+  "emailFrom": "info@node-mysql-signup-verification-api.com",
+  "smtpOptions": {
+    "host": "smtp.ethereal.email",
+    "port": 587,
+    "auth": {
+      "user": "krystel.west@ethereal.email",
+      "pass": "GEECrfk4ANBRdSYN1C"
+    }
+  }
+}   
