@@ -6,18 +6,14 @@ const authorize = require("../_middleware/authorize");
 const Role = require("../_helpers/role");
 const accountService = require("../accounts/account.service");
 
-// routes
+// api routes
 router.post("/authenticate", authenticateSchema, authenticate);
 router.post("/refresh-token", refreshToken);
 router.post("/revoke-token", authorize(), revokeTokenSchema, revokeToken);
 router.post("/register", registerSchema, register);
 router.post("/verify-email", verifyEmailSchema, verifyEmail);
 router.post("/forgot-password", forgotPasswordSchema, forgotPassword);
-router.post(
-  "/validate-reset-token",
-  validateResetTokenSchema,
-  validateResetToken
-);
+router.post("/validate-reset-token", validateResetTokenSchema, validateResetToken);
 router.post("/reset-password", resetPasswordSchema, resetPassword);
 
 router.get("/", authorize(Role.Admin), getAll);

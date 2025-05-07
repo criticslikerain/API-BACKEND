@@ -1,3 +1,5 @@
+const { fn, col } = require('sequelize')
+
 module.exports = {
   create,
   getAll,
@@ -24,6 +26,10 @@ async function getDepartment(id){
 }
 
 async function update(id, params){
+  if(await db.Department.findOne({ where: { name: params.name }})){
+    throw `Name '${params.name}' is already existed`
+  }
+  
   const department = await getDepartment(id)
 
   Object.assign(department, params)
@@ -34,11 +40,29 @@ async function update(id, params){
 }
 
 async function getAll(){
-  const departments = await db.Department.findAll()
+  const departments = await db.Department.findAll({
+    attributes: {
+      include: [
+        [fn('COUNT', col('employees.id')), 'employeeCount']
+      ]
+    },
+    include: [
+      {
+        model: db.Employee,
+        attributes: [], // count employees
+      }
+    ],
+    group: ['departments.id']
+  })
+  
   return departments.map(x => basicDetails(x))
 }
 
 async function create(params) {
+  if(await db.Department.findOne({ where: { name: params.name }})){
+    throw `Name '${params.name}' is already existed`
+  }
+
   const department = new db.Department(params)
 
   await department.save()
@@ -47,6 +71,8 @@ async function create(params) {
 }
 
 function basicDetails(department){
+  // console.log(JSON.stringify(department, null, 2))
   const { id, name, description } = department
-  return { id, name, description }
+  const employeeCount = department.get('employeeCount')
+  return { id, name, description, employeeCount }
 }
