@@ -13,7 +13,12 @@ app.use(cookieParser())
 
 // change origin during production
 // example origin: 'https://your-frontend-domain.com',
-app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: true }))
+app.use(cors({
+    origin: 'http://localhost:4200',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 // api routes
 app.use('/accounts', require('./accounts/accounts.controller'))
